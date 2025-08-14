@@ -1,5 +1,6 @@
 package com.neueda.todo_simple_app.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class Task {
     }
 
     @OneToMany(mappedBy =  "task", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JsonManagedReference
     private List<TaskItem> taskItems = new ArrayList<>();
 
     public  List<TaskItem> getTaskItems(){
