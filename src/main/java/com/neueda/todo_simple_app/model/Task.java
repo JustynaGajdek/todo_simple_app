@@ -36,7 +36,7 @@ public class Task {
         this.description = description;
     }
 
-    @OneToMany(mappedBy =  "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy =  "task", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<TaskItem> taskItems = new ArrayList<>();
 
     public  List<TaskItem> getTaskItems(){
