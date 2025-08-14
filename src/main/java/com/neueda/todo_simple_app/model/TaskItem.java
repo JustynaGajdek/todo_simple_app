@@ -1,5 +1,6 @@
 package com.neueda.todo_simple_app.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -13,6 +14,7 @@ public class TaskItem {
 
     @ManyToOne
     @JoinColumn(name = "task_id")
+    @JsonBackReference
     private Task task;
 
 
@@ -21,6 +23,10 @@ public class TaskItem {
         this.description = description;
         this.completed = completed;
         this.task = task;
+    }
+
+    public TaskItem() {
+
     }
     public String getDescription() {
         return description;
