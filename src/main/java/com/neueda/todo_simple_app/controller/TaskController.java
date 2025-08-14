@@ -51,4 +51,11 @@ public class TaskController {
     public TaskItem saveTaskItem(@PathVariable Long taskId, @RequestBody TaskItem newItem) {
         return todoService.saveTaskItem(taskId, newItem);
     }
+
+    @DeleteMapping("/items/{itemId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteTaskItem(@PathVariable Long itemId) {
+        todoService.deleteTaskItemById(itemId);
+    }
+
 }

@@ -135,7 +135,7 @@
         e.preventDefault();
         const taskId = taskIdHidden.value;
         const description = subitemInput.value;
-        await fetch(`/api/tasks/${taskId}/items`, {
+        await fetch(`/api/tasks/${taskId}/item`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ description: description })
