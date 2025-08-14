@@ -1,13 +1,14 @@
 package com.neueda.todo_simple_app.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Task {
-
+    @Id
+    @GeneratedValue
     private Long id;
     private String description;
 

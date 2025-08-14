@@ -1,53 +1,74 @@
 package com.neueda.todo_simple_app.service;
 
+import com.neueda.todo_simple_app.model.TaskItem;
+import com.neueda.todo_simple_app.repository.TaskItemRepository;
+import com.neueda.todo_simple_app.repository.TaskRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import com.neueda.todo_simple_app.model.Task;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 
 @Service
 public class TodoService {
 
-    private final List<Task> tasks = new ArrayList<>();
-    private long nextId = 1;
 
-    public TodoService() {
+    private final TaskRepository taskRepository;
+    private final TaskItemRepository taskItemRepository;
 
-        tasks.add(new Task(nextId++, "Go shopping"));
-        tasks.add(new Task(nextId++, "Go to sleep :)"));
+
+    public TodoService(TaskRepository taskRepository, TaskItemRepository taskItemRepository) {
+        this.taskRepository = taskRepository;
+        this.taskItemRepository = taskItemRepository;
     }
 
-    public List<Task> findAll() {
-        return tasks;
+//    private final List<Task> tasks = new ArrayList<>();
+//    private long nextId = 1;
+//
+//    public TodoService() {
+//
+//        tasks.add(new Task(nextId++, "Go shopping"));
+//        tasks.add(new Task(nextId++, "Go to sleep :)"));
+//    }
+
+    public List<Task> findAllTasks() {
+        return taskRepository.findAll();
     }
 
-    public Task findById(Long id) {
-        for (Task task : tasks) {
-            if (task.getId().equals(id)) {
-                return task;
-            }
-        }
-        return null;
+    public Task findTaskById(Long id) {
+
+        return taskRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found with id: " + id));
     }
 
-    public Task save(Task newTask) {
+    public Task saveTask(Task task) {
 
-        newTask.setId(nextId++);
-        tasks.add(newTask);
-        return newTask;
+        return taskRepository.save(task);
     }
 
-    public Task update(Long id, Task updatedTask) {
-        Task existingTask = findById(id);
+    public Task updateTask(Long id, Task updatedTask) {
+        Task existingTask = findTaskById(id);
         if (existingTask != null) {
             existingTask.setDescription(updatedTask.getDescription());
-            return existingTask;
+            return taskRepository.save(existingTask);
         }
         return null;
     }
 
-    public void deleteById(Long id) {
-        tasks.removeIf(task -> task.getId().equals(id));
+    public void deleteTaskById(Long id) {
+        taskRepository.deleteById(id);
+    }
+
+    public TaskItem saveTaskItem (Long taskId, TaskItem taskItem){
+        Task task = findTaskById(taskId);
+        taskItem.setTask(task);
+        return taskItemRepository.save(taskItem);
+    }
+
+    public void deleteTaskItemById(Long id){
+        taskItemRepository.deleteById(id);
     }
 }

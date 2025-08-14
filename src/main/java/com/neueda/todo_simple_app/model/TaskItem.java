@@ -11,7 +11,7 @@ public class TaskItem {
     private String description;
     private boolean completed = false;
 
-    @ManyToMany
+    @ManyToOne
     @JoinColumn(name = "task_id")
     private Task task;
 
