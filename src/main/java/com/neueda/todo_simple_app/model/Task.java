@@ -1,5 +1,11 @@
 package com.neueda.todo_simple_app.model;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.OneToMany;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Task {
 
     private Long id;
@@ -27,5 +33,16 @@ public class Task {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @OneToMany(mappedBy =  "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TaskItem> taskItems = new ArrayList<>();
+
+    public  List<TaskItem> getTaskItems(){
+        return taskItems;
+    }
+
+    public void setTaskItems(List<TaskItem> taskItems) {
+        this.taskItems = taskItems;
     }
 }
