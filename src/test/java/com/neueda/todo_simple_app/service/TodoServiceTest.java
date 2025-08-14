@@ -86,7 +86,7 @@ class TodoServiceTest {
 
     @Test
     void saveTaskItem_ShouldSetTaskAndSave() {
-        TaskItem newItem = new TaskItem(null, "Subtask", null);
+        TaskItem newItem = new TaskItem(null, "Subtask", true, task1);
         when(taskRepository.findById(1L)).thenReturn(Optional.of(task1));
         when(taskItemRepository.save(any(TaskItem.class))).thenAnswer(invocation -> invocation.getArgument(0));
 

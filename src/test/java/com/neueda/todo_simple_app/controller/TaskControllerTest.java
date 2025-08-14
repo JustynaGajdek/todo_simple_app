@@ -95,7 +95,7 @@ class TaskControllerTest {
 
     @Test
     void saveTaskItem_ShouldReturnCreatedItem() throws Exception {
-        TaskItem newItem = new TaskItem(1L, "Subtask", null);
+        TaskItem newItem = new TaskItem(1L, "Subtask", false, task1);
         Mockito.when(todoService.saveTaskItem(eq(1L), any(TaskItem.class))).thenReturn(newItem);
 
         mockMvc.perform(post("/api/tasks/1/item")
