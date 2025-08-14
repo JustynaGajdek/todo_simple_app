@@ -9,8 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
@@ -27,7 +27,7 @@ class TaskControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private TodoService todoService;
 
     @Autowired
@@ -95,7 +95,7 @@ class TaskControllerTest {
 
     @Test
     void saveTaskItem_ShouldReturnCreatedItem() throws Exception {
-        TaskItem newItem = new TaskItem(1L, "Subtask", null);
+        TaskItem newItem = new TaskItem(1L, "Subtask", true, task1);
         Mockito.when(todoService.saveTaskItem(eq(1L), any(TaskItem.class))).thenReturn(newItem);
 
         mockMvc.perform(post("/api/tasks/1/item")
