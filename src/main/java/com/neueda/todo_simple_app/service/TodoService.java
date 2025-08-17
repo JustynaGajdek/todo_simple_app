@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import com.neueda.todo_simple_app.model.Task;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TodoService {
@@ -58,6 +60,7 @@ public class TodoService {
         return null;
     }
 
+
     public void deleteTaskById(Long id) {
         taskRepository.deleteById(id);
     }
@@ -68,7 +71,26 @@ public class TodoService {
         return taskItemRepository.save(taskItem);
     }
 
-    public void deleteTaskItemById(Long id){
-        taskItemRepository.deleteById(id);
+    @Transactional
+    public void deleteTaskItemById(Long id) {
+        TaskItem item = taskItemRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "TaskItem not found: " + id));
+
+        Task parent = item.getTask();
+        if (parent != null) {
+            parent.getTaskItems().remove(item);
+        }
+        taskItemRepository.delete(item);
+    }
+
+    public TaskItem updateTaskItem(Long itemId, TaskItem updatedItem) {
+        Optional<TaskItem> optionalTaskItem = taskItemRepository.findById(itemId);
+        if (optionalTaskItem.isPresent()) {
+            TaskItem existingItem = optionalTaskItem.get();
+            existingItem.setDescription(updatedItem.getDescription());
+            return taskItemRepository.save(existingItem);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "TaskItem not found with ID: " + itemId);
+        }
     }
 }
