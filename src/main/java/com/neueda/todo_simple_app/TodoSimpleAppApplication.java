@@ -32,11 +32,9 @@ public class TodoSimpleAppApplication {
 				Task shoppingTask = new Task("Go shopping");
 				Task homeworkTask = new Task("Do homework");
 
-				// Zapisz zadania, aby uzyskać ich ID
 				shoppingTask = todoService.saveTask(shoppingTask);
 				homeworkTask = todoService.saveTask(homeworkTask);
 
-				// Twórz i zapisz podzadania powiązane z zadaniami
 				todoService.saveTaskItem(shoppingTask.getId(), new TaskItem("Milk"));
 				todoService.saveTaskItem(shoppingTask.getId(), new TaskItem("Bread"));
 				todoService.saveTaskItem(homeworkTask.getId(), new TaskItem("Write a report"));
