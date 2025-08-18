@@ -6,7 +6,8 @@ import com.neueda.todo_simple_app.repository.TaskItemRepository;
 import com.neueda.todo_simple_app.repository.TaskRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.mockito.Mockito;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -98,7 +99,15 @@ class TodoServiceTest {
 
     @Test
     void deleteTaskItemById_ShouldCallRepositoryDelete() {
+        Task parent = new Task(10L, "parent");
+        TaskItem item = new TaskItem(1L, "sub", false, parent);
+        parent.getTaskItems().add(item);
+
+        when(taskItemRepository.findById(1L)).thenReturn(Optional.of(item));
+
         todoService.deleteTaskItemById(1L);
-        verify(taskItemRepository).deleteById(1L);
+
+        verify(taskItemRepository).delete(item);
+        assertThat(parent.getTaskItems()).doesNotContain(item);
     }
 }

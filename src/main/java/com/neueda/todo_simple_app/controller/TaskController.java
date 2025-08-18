@@ -6,6 +6,7 @@ import com.neueda.todo_simple_app.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -42,6 +43,7 @@ public class TaskController {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTask(@PathVariable Long id) {
         todoService.deleteTaskById(id);
     }
@@ -56,6 +58,11 @@ public class TaskController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTaskItem(@PathVariable Long itemId) {
         todoService.deleteTaskItemById(itemId);
+    }
+
+    @PutMapping("/items/{itemId}")
+    public TaskItem updateTaskItem(@PathVariable Long itemId, @RequestBody TaskItem updatedItem) {
+        return todoService.updateTaskItem(itemId, updatedItem);
     }
 
 }
