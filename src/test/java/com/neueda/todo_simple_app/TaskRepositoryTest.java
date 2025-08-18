@@ -2,10 +2,12 @@ package com.neueda.todo_simple_app;
 
 import com.neueda.todo_simple_app.model.Task;
 import com.neueda.todo_simple_app.repository.TaskRepository;
+import com.neueda.todo_simple_app.service.TodoService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
@@ -14,7 +16,11 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
+@ActiveProfiles("test")
 public class TaskRepositoryTest {
+
+    @MockBean
+    private TodoService todoService;
 
     @Autowired
     private TaskRepository taskRepository;
