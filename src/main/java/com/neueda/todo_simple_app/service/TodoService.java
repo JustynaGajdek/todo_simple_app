@@ -25,15 +25,6 @@ public class TodoService {
         this.taskItemRepository = taskItemRepository;
     }
 
-//    private final List<Task> tasks = new ArrayList<>();
-//    private long nextId = 1;
-//
-//    public TodoService() {
-//
-//        tasks.add(new Task(nextId++, "Go shopping"));
-//        tasks.add(new Task(nextId++, "Go to sleep :)"));
-//    }
-
     public List<Task> findAllTasks() {
         return taskRepository.findAll();
     }
